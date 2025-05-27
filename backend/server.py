@@ -17,10 +17,27 @@ from PIL import Image
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# Configure logging first
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# MongoDB connection (optional - only for status endpoints)
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+db_name = os.environ.get('DB_NAME', 'background_removal_db')
+
+try:
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[db_name]
+    MONGODB_AVAILABLE = True
+    logger.info(f"Connected to MongoDB at {mongo_url}")
+except Exception as e:
+    logger.warning(f"MongoDB connection failed: {e}. Status endpoints will be disabled.")
+    MONGODB_AVAILABLE = False
+    client = None
+    db = None
 
 # Create the main app without a prefix
 app = FastAPI(title="Background Removal API")
@@ -50,6 +67,8 @@ async def root():
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
+    if not MONGODB_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Database not available")
     status_dict = input.dict()
     status_obj = StatusCheck(**status_dict)
     _ = await db.status_checks.insert_one(status_obj.dict())
@@ -57,6 +76,8 @@ async def create_status_check(input: StatusCheckCreate):
 
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
+    if not MONGODB_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Database not available")
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
@@ -175,13 +196,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Logging already configured above
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    if client:
+        client.close()

@@ -14,7 +14,7 @@ from PIL import Image
 import io
 
 # Get backend URL from environment
-BACKEND_URL = "https://e90f7419-9a2c-4e0b-a4aa-01b1399ee4a2.preview.emergentagent.com/api"
+BACKEND_URL = "http://127.0.0.1:8001/api"
 
 class BackgroundRemovalAPITester:
     def __init__(self, base_url):
