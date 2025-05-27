@@ -152,13 +152,16 @@ frontend:
     implemented: true
     working: false
     file: "/app/frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: true
     status_history:
         - working: false
           agent: "main"
           comment: "Implemented custom comparison slider with clipPath masking, interactive range control, and labels. Shows original vs processed image side by side."
+        - working: false
+          agent: "user"
+          comment: "User reported that the before vs after comparison result is not ideal - background removal is not visible in the comparison. Need to fix the comparison slider implementation."
 
   - task: "Download functionality for transparent PNG"
     implemented: true
