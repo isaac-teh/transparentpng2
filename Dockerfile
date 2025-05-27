@@ -14,8 +14,12 @@ RUN yarn install --frozen-lockfile && yarn build
 FROM python:3.11-slim AS backend
 WORKDIR /app
 COPY backend/ /app/
+COPY download_model.py /app/
 RUN rm /app/.env
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Pre-download the AI model to improve first-time performance
+RUN python3 /app/download_model.py
 
 # Stage 3: Final Image - Use Python base with nginx
 FROM python:3.11-slim
@@ -29,6 +33,8 @@ COPY --from=frontend-build /app/build /usr/share/nginx/html
 COPY --from=backend /app /backend
 COPY --from=backend /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=backend /usr/local/bin /usr/local/bin
+# Copy pre-downloaded AI model
+COPY --from=backend /root/.u2net /root/.u2net
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/nginx.conf

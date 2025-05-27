@@ -2,7 +2,8 @@ import React, { useState, useCallback } from "react";
 import "./App.css";
 import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// For containerized deployment, use relative path since frontend and backend are on same origin
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const BackgroundRemover = () => {
