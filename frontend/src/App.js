@@ -252,8 +252,12 @@ const BackgroundRemover = () => {
                       <img
                         src={originalImage}
                         alt="Original"
-                        className="absolute top-0 right-0 h-full object-contain"
-                        style={{ width: `${(100 / (100 - sliderPosition)) * 100}%` }}
+                        className="absolute top-0 h-full object-contain"
+                        style={{ 
+                          right: 0,
+                          width: `${(100 / (100 - sliderPosition)) * 100}%`,
+                          transform: `translateX(${sliderPosition / (100 - sliderPosition) * 100}%)`
+                        }}
                       />
                     </div>
                   </div>
