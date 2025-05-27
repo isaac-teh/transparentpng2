@@ -21,16 +21,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 FROM nginx:stable-alpine
 # Copy built frontend
 COPY --from=frontend-build /app/build /usr/share/nginx/html
-# Copy backend
+# Copy backend with all dependencies already installed
 COPY --from=backend /app /backend
+COPY --from=backend /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=backend /usr/local/bin /usr/local/bin
 # Copy nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Install Python and dependencies
-RUN apk add --no-cache python3 py3-pip \
-    && pip3 install --break-system-packages -r /backend/requirements.txt
+# Install only Python runtime (not pip, since we already have packages)
+RUN apk add --no-cache python3
 
 # Add env variables if needed
 ENV PYTHONUNBUFFERED=1
