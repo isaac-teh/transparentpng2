@@ -50,11 +50,20 @@ class BackgroundRemovalAPITester:
     def create_large_test_image(self):
         """Create a large test image (>20MB) for size validation testing"""
         # Create a large image that will exceed 20MB when saved
-        img = Image.new('RGB', (5000, 5000), color='blue')
+        # Use larger dimensions and uncompressed format
+        img = Image.new('RGB', (8000, 8000), color='blue')
         img_buffer = io.BytesIO()
-        img.save(img_buffer, format='JPEG', quality=100)
+        img.save(img_buffer, format='BMP')  # BMP is uncompressed, will be larger
         img_buffer.seek(0)
-        return img_buffer.getvalue()
+        data = img_buffer.getvalue()
+        
+        # If still not large enough, create even larger or duplicate data
+        if len(data) <= 20 * 1024 * 1024:
+            # Create multiple copies to ensure we exceed 20MB
+            multiplier = (20 * 1024 * 1024 // len(data)) + 2
+            data = data * multiplier
+        
+        return data
 
     def test_api_health_check(self):
         """Test 1: API Health Check - GET /api/"""
