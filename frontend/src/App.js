@@ -228,61 +228,52 @@ const BackgroundRemover = () => {
                 🔄 Before vs After Comparison
               </h3>
               
-              <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+              <div className="relative bg-white rounded-lg overflow-hidden border border-gray-200">
                 {/* Images Container */}
-                <div className="relative aspect-video">
-                  {/* Original Image - Full Width */}
-                  <div className="absolute inset-0">
+                <div className="relative aspect-video bg-white">
+                  {/* Processed Image (Background Removed) - LEFT SIDE - Full width with transparent pattern */}
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%23f0f0f0'%3e%3cpolygon points='0,0 0,10 10,10 10,0'/%3e%3cpolygon points='10,10 10,20 20,20 20,10'/%3e%3c/g%3e%3c/svg%3e")`,
+                    backgroundSize: '20px 20px'
+                  }}>
                     <img
-                      src={originalImage}
-                      alt="Original"
+                      src={processedImage}
+                      alt="Background Removed"
                       className="w-full h-full object-contain"
                     />
                   </div>
                   
-                  {/* Processed Image Overlay - Dynamic Width */}
+                  {/* Original Image Overlay - RIGHT SIDE - Dynamic width */}
                   <div 
-                    className="absolute top-0 left-0 h-full overflow-hidden"
-                    style={{ width: `${sliderPosition}%` }}
+                    className="absolute top-0 right-0 h-full overflow-hidden bg-white"
+                    style={{ width: `${100 - sliderPosition}%` }}
                   >
                     <div className="relative w-full h-full">
                       <img
-                        src={processedImage}
-                        alt="Background Removed"
-                        className="absolute top-0 left-0 h-full object-contain"
-                        style={{ width: `${(100 / sliderPosition) * 100}%` }}
+                        src={originalImage}
+                        alt="Original"
+                        className="absolute top-0 right-0 h-full object-contain"
+                        style={{ width: `${(100 / (100 - sliderPosition)) * 100}%` }}
                       />
                     </div>
                   </div>
                   
-                  {/* Vertical Slider Line */}
+                  {/* Vertical Slider Line - GREEN */}
                   <div
-                    className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-20 pointer-events-none"
+                    className="absolute top-0 bottom-0 w-1 bg-green-500 shadow-lg z-20 pointer-events-none"
                     style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
                   >
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-600 rounded-full shadow-lg flex items-center justify-center border-2 border-white">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-green-500 rounded-full shadow-lg flex items-center justify-center border-2 border-white">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                   </div>
                   
                   {/* Labels */}
-                  <div className="absolute top-4 left-4 bg-black bg-opacity-80 text-white px-3 py-1 rounded-lg text-sm font-bold">
-                    Original
-                  </div>
-                  <div className="absolute top-4 right-4 bg-green-600 bg-opacity-90 text-white px-3 py-1 rounded-lg text-sm font-bold">
+                  <div className="absolute top-4 left-4 bg-green-600 bg-opacity-90 text-white px-3 py-1 rounded-lg text-sm font-bold">
                     Background Removed
                   </div>
-                  
-                  {/* Transparent Background Pattern for processed side */}
-                  <div 
-                    className="absolute top-0 left-0 h-full bg-transparent overflow-hidden pointer-events-none"
-                    style={{ 
-                      width: `${sliderPosition}%`,
-                      backgroundImage: `url("data:image/svg+xml,%3csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%23f0f0f0'%3e%3cpolygon points='0,0 0,10 10,10 10,0'/%3e%3cpolygon points='10,10 10,20 20,20 20,10'/%3e%3c/g%3e%3c/svg%3e")`,
-                      backgroundSize: '20px 20px',
-                      backgroundPosition: '0 0, 10px 10px'
-                    }}
-                  >
+                  <div className="absolute top-4 right-4 bg-black bg-opacity-80 text-white px-3 py-1 rounded-lg text-sm font-bold">
+                    Original
                   </div>
                 </div>
                 
@@ -294,12 +285,12 @@ const BackgroundRemover = () => {
                     max="100"
                     value={sliderPosition}
                     onChange={(e) => setSliderPosition(Number(e.target.value))}
-                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <div className="flex justify-between text-sm text-gray-600 mt-2 font-medium">
-                    <span>← Original Image</span>
+                    <span>← Background Removed</span>
                     <span className="text-center">Drag to Compare</span>
-                    <span>Background Removed →</span>
+                    <span>Original →</span>
                   </div>
                 </div>
               </div>
