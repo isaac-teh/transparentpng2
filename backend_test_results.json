@@ -1,0 +1,79 @@
+{
+  "summary": {
+    "passed": 4,
+    "total": 6,
+    "success_rate": 66.66666666666666
+  },
+  "results": [
+    {
+      "test": "API Health Check",
+      "success": true,
+      "message": "API is responding correctly",
+      "details": {
+        "status_code": 200,
+        "response": {
+          "message": "Background Removal API Ready"
+        }
+      },
+      "timestamp": "2025-05-27 06:48:29"
+    },
+    {
+      "test": "Background Removal Base64",
+      "success": true,
+      "message": "Background removal successful with valid response",
+      "details": {
+        "processing_time": "13.24s",
+        "original_size": "825 bytes",
+        "processed_size": "150 bytes",
+        "request_time": "13.27s",
+        "success": true
+      },
+      "timestamp": "2025-05-27 06:48:43"
+    },
+    {
+      "test": "Background Removal Direct",
+      "success": true,
+      "message": "Background removal successful, returned PNG image",
+      "details": {
+        "content_type": "image/png",
+        "content_length": 150,
+        "processing_time": "9.239425659179688",
+        "original_size": "825",
+        "processed_size": "150",
+        "request_time": "9.30s"
+      },
+      "timestamp": "2025-05-27 06:48:52"
+    },
+    {
+      "test": "PNG Image Upload",
+      "success": true,
+      "message": "PNG image processed successfully",
+      "details": {
+        "processing_time": "8.92s",
+        "original_size": "287 bytes",
+        "processed_size": "150 bytes"
+      },
+      "timestamp": "2025-05-27 06:49:01"
+    },
+    {
+      "test": "File Size Validation",
+      "success": false,
+      "message": "Could not create test image larger than 20MB",
+      "details": {
+        "actual_size": "392508 bytes"
+      },
+      "timestamp": "2025-05-27 06:49:01"
+    },
+    {
+      "test": "Invalid File Type Validation",
+      "success": false,
+      "message": "Expected 400 status code but got 500",
+      "details": {
+        "status_code": 500,
+        "content_type": "text/plain",
+        "response": "{\"detail\":\"Processing failed: 400: Invalid file type. Please upload an image.\"}"
+      },
+      "timestamp": "2025-05-27 06:49:02"
+    }
+  ]
+}
