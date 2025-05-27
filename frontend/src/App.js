@@ -243,23 +243,18 @@ const BackgroundRemover = () => {
                     />
                   </div>
                   
-                  {/* Original Image Overlay - RIGHT SIDE - Dynamic width */}
+                  {/* Original Image Overlay - RIGHT SIDE - Properly clipped */}
                   <div 
-                    className="absolute top-0 right-0 h-full overflow-hidden bg-white"
-                    style={{ width: `${100 - sliderPosition}%` }}
+                    className="absolute inset-0 bg-white"
+                    style={{ 
+                      clipPath: `inset(0 0 0 ${sliderPosition}%)` 
+                    }}
                   >
-                    <div className="relative w-full h-full">
-                      <img
-                        src={originalImage}
-                        alt="Original"
-                        className="absolute top-0 h-full object-contain"
-                        style={{ 
-                          right: 0,
-                          width: `${(100 / (100 - sliderPosition)) * 100}%`,
-                          transform: `translateX(${sliderPosition / (100 - sliderPosition) * 100}%)`
-                        }}
-                      />
-                    </div>
+                    <img
+                      src={originalImage}
+                      alt="Original"
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   
                   {/* Vertical Slider Line - GREEN */}
