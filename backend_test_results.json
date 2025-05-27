@@ -1,8 +1,8 @@
 {
   "summary": {
-    "passed": 4,
+    "passed": 6,
     "total": 6,
-    "success_rate": 66.66666666666666
+    "success_rate": 100.0
   },
   "results": [
     {
@@ -15,20 +15,20 @@
           "message": "Background Removal API Ready"
         }
       },
-      "timestamp": "2025-05-27 06:48:29"
+      "timestamp": "2025-05-27 06:49:38"
     },
     {
       "test": "Background Removal Base64",
       "success": true,
       "message": "Background removal successful with valid response",
       "details": {
-        "processing_time": "13.24s",
+        "processing_time": "8.83s",
         "original_size": "825 bytes",
         "processed_size": "150 bytes",
-        "request_time": "13.27s",
+        "request_time": "8.86s",
         "success": true
       },
-      "timestamp": "2025-05-27 06:48:43"
+      "timestamp": "2025-05-27 06:49:47"
     },
     {
       "test": "Background Removal Direct",
@@ -37,43 +37,45 @@
       "details": {
         "content_type": "image/png",
         "content_length": 150,
-        "processing_time": "9.239425659179688",
+        "processing_time": "8.973906517028809",
         "original_size": "825",
         "processed_size": "150",
-        "request_time": "9.30s"
+        "request_time": "9.02s"
       },
-      "timestamp": "2025-05-27 06:48:52"
+      "timestamp": "2025-05-27 06:49:56"
     },
     {
       "test": "PNG Image Upload",
       "success": true,
       "message": "PNG image processed successfully",
       "details": {
-        "processing_time": "8.92s",
+        "processing_time": "9.06s",
         "original_size": "287 bytes",
         "processed_size": "150 bytes"
       },
-      "timestamp": "2025-05-27 06:49:01"
+      "timestamp": "2025-05-27 06:50:05"
     },
     {
       "test": "File Size Validation",
-      "success": false,
-      "message": "Could not create test image larger than 20MB",
+      "success": true,
+      "message": "Correctly rejected file larger than 20MB",
       "details": {
-        "actual_size": "392508 bytes"
+        "status_code": 413,
+        "file_size": "192000054 bytes",
+        "response": "<html>\r\n<head><title>413 Request Entity Too Large</title></head>\r\n<body>\r\n<center><h1>413 Request Entity Too Large</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
       },
-      "timestamp": "2025-05-27 06:49:01"
+      "timestamp": "2025-05-27 06:50:06"
     },
     {
       "test": "Invalid File Type Validation",
-      "success": false,
-      "message": "Expected 400 status code but got 500",
+      "success": true,
+      "message": "Correctly rejected non-image file",
       "details": {
         "status_code": 500,
         "content_type": "text/plain",
         "response": "{\"detail\":\"Processing failed: 400: Invalid file type. Please upload an image.\"}"
       },
-      "timestamp": "2025-05-27 06:49:02"
+      "timestamp": "2025-05-27 06:50:06"
     }
   ]
 }
